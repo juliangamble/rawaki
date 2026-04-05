@@ -66,10 +66,11 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 - **Note**: Map objects are Java records. `dump()` supports `noPills`, `noBases`, `noStarts` flags.
 - **Tests**: `GameMapTest.java` — 23 tests
 
-### 1.7 Sounds (enum)
+### 1.7 Sounds (enum) ✅
 - **Source**: `src/sounds.coffee`
 - **Target**: `org.rawaki.core.SoundEffect` (enum)
-- **Content**: 12 sound effect IDs
+- **Content**: 12 sound effect IDs — ordinals match network protocol IDs
+- **Tests**: `SoundEffectTest.java` — 2 tests
 
 ### 1.8 TeamColors
 - **Source**: `src/team_colors.coffee`
