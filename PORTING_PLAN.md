@@ -59,11 +59,12 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 - **Deferred**: Retile rendering methods (`retileDeepSea`, `retileBuilding`, `retileRiver`, `retileRoad`, `retileForest`, `retileBoat`, `setTile`) — these depend on the view/rendering system and will be ported in Phase 6 (Client).
 - **Tests**: `MapCellTest.java` — 32 tests
 
-### 1.6 Map
-- **Source**: `src/map.coffee` — `Map` class
-- **Target**: `org.rawaki.core.map.GameMap`
-- **Key methods**: `cellAtTile()`, `each()`, `clear()`, `retile()`, `findCenterCell()`, `dump()`, `load()` (BMAP binary format)
-- **Inner classes**: `MapView` (interface), `MapObject`, `Pillbox`, `Base`, `Start`
+### 1.6 Map ✅
+- **Source**: `src/map.coffee` — `Map` class, `MapObject`, `Pillbox`, `Base`, `Start`
+- **Target**: `org.rawaki.core.map.GameMap`, `Pillbox` (record), `Base` (record), `Start` (record)
+- **Key methods**: `cellAtTile()`, `each()`, `clear()`, `retile()`, `findCenterCell()`, `dump()` (BMAP binary format with options), `load()` (static factory)
+- **Note**: Map objects are Java records. `dump()` supports `noPills`, `noBases`, `noStarts` flags.
+- **Tests**: `GameMapTest.java` — 23 tests
 
 ### 1.7 Sounds (enum)
 - **Source**: `src/sounds.coffee`
