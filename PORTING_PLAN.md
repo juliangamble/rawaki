@@ -72,11 +72,13 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 - **Content**: 12 sound effect IDs — ordinals match network protocol IDs
 - **Tests**: `SoundEffectTest.java` — 2 tests
 
-### 1.8 TeamColors
+### 1.8 TeamColors ✅
 - **Source**: `src/team_colors.coffee`
-- **Target**: `org.rawaki.core.TeamColor` (enum or record list)
+- **Target**: `org.rawaki.core.TeamColor` (enum)
+- **Content**: 6 team colors with RGB values (red, blue, green, cyan, yellow, magenta)
+- **Tests**: `TeamColorTest.java` — 13 tests
 
-### 1.9 Tests for Phase 1
+### 1.9 Tests for Phase 1 ✅
 - Port the 131 existing map/tile Mocha tests from `test/map.test.js` and `test/map-extended.test.js` to JUnit 5
 - Port the 17 helpers tests from `test/helpers.test.js`
 - Port the 15 net protocol tests from `test/net.test.js`
@@ -84,6 +86,7 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 - Test terrain type lookups
 - Test cell retiling logic
 - Test `findCenterCell()`
+- **Result**: 159 JUnit tests across 8 test classes, all passing
 
 ---
 
