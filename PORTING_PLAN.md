@@ -29,11 +29,12 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 - **Content**: `PIXEL_SIZE_WORLD`, `TILE_SIZE_PIXELS`, `TILE_SIZE_WORLD`, `MAP_SIZE_TILES`, `MAP_SIZE_PIXELS`, `MAP_SIZE_WORLD`, `TICK_LENGTH_MS`
 - **Tests**: `ConstantsTest.java` — 7 tests
 
-### 1.2 Terrain Types
+### 1.2 Terrain Types ✅
 - **Source**: `src/map.coffee` — `TERRAIN_TYPES` array + `TERRAIN_TYPE_ATTRIBUTES` from `src/world_map.coffee`
 - **Target**: `org.rawaki.core.TerrainType` (enum)
 - **Fields**: `ascii` (char), `description`, `tankSpeed`, `tankTurn`, `manSpeed`
 - **Lookup**: by char and by ordinal
+- **Tests**: `TerrainTypeTest.java` — 43 tests
 
 ### 1.3 Helpers
 - **Source**: `src/helpers.coffee`
