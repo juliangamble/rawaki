@@ -51,11 +51,13 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 - **Note**: Uses `ByteArrayOutputStream` for packing, `byte[]` with offset for unpacking
 - **Tests**: `StructTest.java` — 26 tests
 
-### 1.5 MapCell
+### 1.5 MapCell ✅
 - **Source**: `src/map.coffee` — `MapCell` class
 - **Target**: `org.rawaki.core.map.MapCell`
-- **Key methods**: `neigh()`, `isType()`, `isEdgeCell()`, `getNumericType()`, `setType()`, `retile()`, and all `retileXxx()` methods (deepSea, building, river, road, forest, boat)
-- **Note**: The retile methods are large switch/if-else chains for tile selection — port faithfully
+- **Key methods**: `neigh()`, `isType()` (by TerrainType and by ascii char), `isEdgeCell()`, `getNumericType()`, `setType()` (by TerrainType, char, int), `retile()` (stub)
+- **Note**: Also created minimal `GameMap` (cellAtTile, retile) needed by MapCell. Full GameMap implementation in Phase 1.6.
+- **Deferred**: Retile rendering methods (`retileDeepSea`, `retileBuilding`, `retileRiver`, `retileRoad`, `retileForest`, `retileBoat`, `setTile`) — these depend on the view/rendering system and will be ported in Phase 6 (Client).
+- **Tests**: `MapCellTest.java` — 32 tests
 
 ### 1.6 Map
 - **Source**: `src/map.coffee` — `Map` class
