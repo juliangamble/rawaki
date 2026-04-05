@@ -3,20 +3,20 @@ package org.rawaki.core;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class StructTest {
+class BinaryPackerTest {
 
     // ── pack / unpack convenience ─────────────────────────────────────────
 
     @Test
     void packByte() {
-        byte[] data = Struct.pack("B", 0xAB);
+        byte[] data = BinaryPacker.pack("B", 0xAB);
         assertEquals(1, data.length);
         assertEquals((byte) 0xAB, data[0]);
     }
 
     @Test
     void packUint16BigEndian() {
-        byte[] data = Struct.pack("H", 0x1234);
+        byte[] data = BinaryPacker.pack("H", 0x1234);
         assertEquals(2, data.length);
         assertEquals((byte) 0x12, data[0]);
         assertEquals((byte) 0x34, data[1]);
@@ -24,7 +24,7 @@ class StructTest {
 
     @Test
     void packUint32BigEndian() {
-        byte[] data = Struct.pack("I", 0x12345678);
+        byte[] data = BinaryPacker.pack("I", 0x12345678);
         assertEquals(4, data.length);
         assertEquals((byte) 0x12, data[0]);
         assertEquals((byte) 0x34, data[1]);
@@ -34,14 +34,14 @@ class StructTest {
 
     @Test
     void packMultipleValues() {
-        byte[] data = Struct.pack("BHI", 1, 2, 3);
+        byte[] data = BinaryPacker.pack("BHI", 1, 2, 3);
         assertEquals(7, data.length);
     }
 
     @Test
     void unpackByte() {
         byte[] data = { 42 };
-        var result = Struct.unpack("B", data);
+        var result = BinaryPacker.unpack("B", data);
         assertEquals(42, result.values()[0]);
         assertEquals(1, result.bytesRead());
     }
@@ -49,7 +49,7 @@ class StructTest {
     @Test
     void unpackUint16() {
         byte[] data = { 0x01, (byte) 0x00 };
-        var result = Struct.unpack("H", data);
+        var result = BinaryPacker.unpack("H", data);
         assertEquals(256, result.values()[0]);
         assertEquals(2, result.bytesRead());
     }
@@ -57,36 +57,36 @@ class StructTest {
     @Test
     void unpackUint32() {
         byte[] data = { 0x00, 0x00, 0x01, 0x00 };
-        var result = Struct.unpack("I", data);
+        var result = BinaryPacker.unpack("I", data);
         assertEquals(256, result.values()[0]);
         assertEquals(4, result.bytesRead());
     }
 
     @Test
     void packUnpackRoundTripByte() {
-        byte[] data = Struct.pack("B", 255);
-        var result = Struct.unpack("B", data);
+        byte[] data = BinaryPacker.pack("B", 255);
+        var result = BinaryPacker.unpack("B", data);
         assertEquals(255, result.values()[0]);
     }
 
     @Test
     void packUnpackRoundTripUint16() {
-        byte[] data = Struct.pack("H", 65535);
-        var result = Struct.unpack("H", data);
+        byte[] data = BinaryPacker.pack("H", 65535);
+        var result = BinaryPacker.unpack("H", data);
         assertEquals(65535, result.values()[0]);
     }
 
     @Test
     void packUnpackRoundTripUint32() {
-        byte[] data = Struct.pack("I", 0x7FFFFFFF);
-        var result = Struct.unpack("I", data);
+        byte[] data = BinaryPacker.pack("I", 0x7FFFFFFF);
+        var result = BinaryPacker.unpack("I", data);
         assertEquals(0x7FFFFFFF, result.values()[0]);
     }
 
     @Test
     void packUnpackMixed() {
-        byte[] data = Struct.pack("BHB", 10, 5000, 20);
-        var result = Struct.unpack("BHB", data);
+        byte[] data = BinaryPacker.pack("BHB", 10, 5000, 20);
+        var result = BinaryPacker.unpack("BHB", data);
         assertEquals(10, result.values()[0]);
         assertEquals(5000, result.values()[1]);
         assertEquals(20, result.values()[2]);
@@ -96,7 +96,7 @@ class StructTest {
     @Test
     void unpackWithOffset() {
         byte[] data = { 0x00, 0x00, 42 };
-        var result = Struct.unpack("B", data, 2);
+        var result = BinaryPacker.unpack("B", data, 2);
         assertEquals(42, result.values()[0]);
         assertEquals(1, result.bytesRead());
     }
@@ -105,14 +105,14 @@ class StructTest {
 
     @Test
     void packSingleBitTrue() {
-        byte[] data = Struct.pack("f", 1);
+        byte[] data = BinaryPacker.pack("f", 1);
         assertEquals(1, data.length);
         assertEquals(1, data[0] & 0x01);
     }
 
     @Test
     void packSingleBitFalse() {
-        byte[] data = Struct.pack("f", 0);
+        byte[] data = BinaryPacker.pack("f", 0);
         assertEquals(1, data.length);
         assertEquals(0, data[0]);
     }
@@ -120,21 +120,21 @@ class StructTest {
     @Test
     void packMultipleBits() {
         // true, false, true = bits 0,2 set = 0b00000101 = 5
-        byte[] data = Struct.pack("fff", 1, 0, 1);
+        byte[] data = BinaryPacker.pack("fff", 1, 0, 1);
         assertEquals(1, data.length);
         assertEquals(5, data[0] & 0xFF);
     }
 
     @Test
     void packEightBitsFillsOneByte() {
-        byte[] data = Struct.pack("ffffffff", 1, 1, 1, 1, 1, 1, 1, 1);
+        byte[] data = BinaryPacker.pack("ffffffff", 1, 1, 1, 1, 1, 1, 1, 1);
         assertEquals(1, data.length);
         assertEquals(0xFF, data[0] & 0xFF);
     }
 
     @Test
     void packNineBitsSpillsToSecondByte() {
-        byte[] data = Struct.pack("fffffffff", 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        byte[] data = BinaryPacker.pack("fffffffff", 1, 1, 1, 1, 1, 1, 1, 1, 1);
         assertEquals(2, data.length);
         assertEquals(0xFF, data[0] & 0xFF);
         assertEquals(1, data[1] & 0xFF);
@@ -143,7 +143,7 @@ class StructTest {
     @Test
     void unpackBitFields() {
         byte[] data = { 5 }; // bits 0 and 2 set
-        var result = Struct.unpack("fff", data);
+        var result = BinaryPacker.unpack("fff", data);
         assertEquals(1, result.values()[0]); // bit 0
         assertEquals(0, result.values()[1]); // bit 1
         assertEquals(1, result.values()[2]); // bit 2
@@ -151,8 +151,8 @@ class StructTest {
 
     @Test
     void packUnpackBitFieldRoundTrip() {
-        byte[] data = Struct.pack("ffffff", 1, 0, 1, 1, 0, 0);
-        var result = Struct.unpack("ffffff", data);
+        byte[] data = BinaryPacker.pack("ffffff", 1, 0, 1, 1, 0, 0);
+        var result = BinaryPacker.unpack("ffffff", data);
         assertEquals(1, result.values()[0]);
         assertEquals(0, result.values()[1]);
         assertEquals(1, result.values()[2]);
@@ -165,7 +165,7 @@ class StructTest {
 
     @Test
     void packBytesThenBits() {
-        byte[] data = Struct.pack("Bff", 42, 1, 0);
+        byte[] data = BinaryPacker.pack("Bff", 42, 1, 0);
         assertEquals(2, data.length);
         assertEquals(42, data[0] & 0xFF);
         assertEquals(1, data[1] & 0xFF); // bit 0 set
@@ -173,7 +173,7 @@ class StructTest {
 
     @Test
     void packBitsThenBytes() {
-        byte[] data = Struct.pack("ffB", 1, 0, 42);
+        byte[] data = BinaryPacker.pack("ffB", 1, 0, 42);
         assertEquals(2, data.length);
         assertEquals(1, data[0] & 0xFF); // bit 0 set
         assertEquals(42, data[1] & 0xFF);
@@ -181,8 +181,8 @@ class StructTest {
 
     @Test
     void packUnpackMixedBytesAndBits() {
-        byte[] data = Struct.pack("BffHffB", 10, 1, 0, 500, 0, 1, 20);
-        var result = Struct.unpack("BffHffB", data);
+        byte[] data = BinaryPacker.pack("BffHffB", 10, 1, 0, 500, 0, 1, 20);
+        var result = BinaryPacker.unpack("BffHffB", data);
         assertEquals(10, result.values()[0]);
         assertEquals(1, result.values()[1]);
         assertEquals(0, result.values()[2]);
@@ -196,7 +196,7 @@ class StructTest {
 
     @Test
     void streamingPackerBasic() {
-        var p = Struct.buildPacker();
+        var p = BinaryPacker.buildPacker();
         p.write('B', 1);
         p.write('H', 2);
         byte[] data = p.finish();
@@ -205,8 +205,8 @@ class StructTest {
 
     @Test
     void streamingUnpackerBasic() {
-        byte[] data = Struct.pack("BH", 1, 2);
-        var u = Struct.buildUnpacker(data);
+        byte[] data = BinaryPacker.pack("BH", 1, 2);
+        var u = BinaryPacker.buildUnpacker(data);
         assertEquals(1, u.read('B'));
         assertEquals(2, u.read('H'));
         assertEquals(3, u.finish());
@@ -216,14 +216,14 @@ class StructTest {
 
     @Test
     void packUnknownFormatThrows() {
-        var p = Struct.buildPacker();
+        var p = BinaryPacker.buildPacker();
         assertThrows(IllegalArgumentException.class, () -> p.write('Z', 0));
     }
 
     @Test
     void unpackUnknownFormatThrows() {
         byte[] data = { 0 };
-        var u = Struct.buildUnpacker(data);
+        var u = BinaryPacker.buildUnpacker(data);
         assertThrows(IllegalArgumentException.class, () -> u.read('Z'));
     }
 }

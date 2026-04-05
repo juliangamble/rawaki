@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Struct {
+public final class BinaryPacker {
 
     public static Packer buildPacker() {
         return new Packer();
@@ -131,5 +131,5 @@ public final class Struct {
         }
     }
 
-    private Struct() {}
+    private BinaryPacker() {}
 }

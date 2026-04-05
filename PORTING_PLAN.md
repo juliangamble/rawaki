@@ -45,11 +45,11 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 
 ### 1.4 Struct (Binary Packing) ✅
 - **Source**: `src/struct.coffee`
-- **Target**: `org.rawaki.core.Struct`
+- **Target**: `org.rawaki.core.BinaryPacker`
 - **Content**: `Packer`, `Unpacker` (streaming), `pack()`, `unpack()` (convenience)
 - **Formats**: `B` (uint8), `H` (uint16 big-endian), `I` (uint32 big-endian), `f` (bit field)
 - **Note**: Uses `ByteArrayOutputStream` for packing, `byte[]` with offset for unpacking
-- **Tests**: `StructTest.java` — 26 tests
+- **Tests**: `BinaryPackerTest.java` — 26 tests
 
 ### 1.5 MapCell ✅
 - **Source**: `src/map.coffee` — `MapCell` class
