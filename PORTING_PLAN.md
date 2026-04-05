@@ -36,10 +36,12 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 - **Lookup**: by char and by ordinal
 - **Tests**: `TerrainTypeTest.java` — 43 tests
 
-### 1.3 Helpers
+### 1.3 Helpers ✅
 - **Source**: `src/helpers.coffee`
 - **Target**: `org.rawaki.core.Helpers`
-- **Methods**: `distance(a, b)`, `heading(a, b)` — pure math, no dependencies
+- **Methods**: `distance(x1, y1, x2, y2)`, `heading(x1, y1, x2, y2)` — pure math, no dependencies
+- **Note**: `extend()` not ported — Java doesn't use prototype mixins
+- **Tests**: `HelpersTest.java` — 12 tests
 
 ### 1.4 Struct (Binary Packing)
 - **Source**: `src/struct.coffee`
