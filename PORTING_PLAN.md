@@ -43,11 +43,13 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 - **Note**: `extend()` not ported — Java doesn't use prototype mixins
 - **Tests**: `HelpersTest.java` — 12 tests
 
-### 1.4 Struct (Binary Packing)
+### 1.4 Struct (Binary Packing) ✅
 - **Source**: `src/struct.coffee`
 - **Target**: `org.rawaki.core.Struct`
-- **Content**: `buildPacker()`, `buildUnpacker()`, `pack()`, `unpack()` — use `java.nio.ByteBuffer`
-- **Note**: Streaming packer/unpacker pattern maps to a builder with `ByteBuffer`
+- **Content**: `Packer`, `Unpacker` (streaming), `pack()`, `unpack()` (convenience)
+- **Formats**: `B` (uint8), `H` (uint16 big-endian), `I` (uint32 big-endian), `f` (bit field)
+- **Note**: Uses `ByteArrayOutputStream` for packing, `byte[]` with offset for unpacking
+- **Tests**: `StructTest.java` — 26 tests
 
 ### 1.5 MapCell
 - **Source**: `src/map.coffee` — `MapCell` class
