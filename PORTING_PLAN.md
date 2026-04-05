@@ -23,10 +23,11 @@ Porting the Orona Bolo game from CoffeeScript/Node.js to Java 21 / Spring Boot 4
 
 Port the pure game logic — the map, terrain, cells, and map objects. This is self-contained and testable in isolation.
 
-### 1.1 Constants
+### 1.1 Constants ✅
 - **Source**: `src/constants.coffee`
 - **Target**: `org.rawaki.core.Constants`
 - **Content**: `PIXEL_SIZE_WORLD`, `TILE_SIZE_PIXELS`, `TILE_SIZE_WORLD`, `MAP_SIZE_TILES`, `MAP_SIZE_PIXELS`, `MAP_SIZE_WORLD`, `TICK_LENGTH_MS`
+- **Tests**: `ConstantsTest.java` — 7 tests
 
 ### 1.2 Terrain Types
 - **Source**: `src/map.coffee` — `TERRAIN_TYPES` array + `TERRAIN_TYPE_ATTRIBUTES` from `src/world_map.coffee`
