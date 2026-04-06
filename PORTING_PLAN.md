@@ -87,6 +87,7 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 - Test cell retiling logic
 - Test `findCenterCell()`
 - **Result**: 159 JUnit tests across 8 test classes, all passing
+- **Note**: Revisit at the end of the port to ensure full parity with the 393 Orona Mocha tests
 
 ---
 
@@ -94,11 +95,12 @@ Port the pure game logic — the map, terrain, cells, and map objects. This is s
 
 Extend the core map with game-specific logic and establish the base class for world objects.
 
-### 2.1 WorldMapCell
+### 2.1 WorldMapCell ✅
 - **Source**: `src/world_map.coffee` — `WorldMapCell`
 - **Target**: `org.rawaki.core.map.WorldMapCell extends MapCell`
 - **Key methods**: `isObstacle()`, `hasTankOnBoat()`, `getTankSpeed()`, `getTankTurn()`, `getManSpeed()`, `getPixelCoordinates()`, `getWorldCoordinates()`, `takeShellHit()`, `takeExplosionHit()`
-- **Note**: `setType()` override adds `life` tracking and notifies world of changes
+- **Note**: `setType()` override adds `life` tracking. Defines `PillLike`, `BaseLike`, `TankLike`, `ManLike` interfaces to avoid circular dependencies with game object package.
+- **Tests**: `WorldMapCellTest.java` — 38 tests
 
 ### 2.2 WorldMap
 - **Source**: `src/world_map.coffee` — `WorldMap`
