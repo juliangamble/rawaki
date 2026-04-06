@@ -125,10 +125,12 @@ Extend the core map with game-specific logic and establish the base class for wo
 - **Note**: Merged into BoloObject rather than a separate class. The `emit()` method uses `List.copyOf()` to avoid ConcurrentModificationException when listeners modify the list during iteration.
 - **Tests**: Added 7 Ref tests to `BoloObjectTest.java` (total now 29)
 
-### 2.5 WorldMixin
+### 2.5 WorldMixin ✅
 - **Source**: `src/world_mixin.coffee`
-- **Target**: `org.rawaki.core.world.BoloWorldMixin` (interface with default methods, or abstract class)
-- **Methods**: `boloInit()`, `addTank()`, `removeTank()`, `getAllMapObjects()`, `spawnMapObjects()`, `resolveMapObjectOwners()`
+- **Target**: `org.rawaki.core.world.BoloWorldMixin` (interface with default methods, extends `World`)
+- **Methods**: `addTank()`, `removeTank()`, `getAllMapObjects()`, `spawnMapObjects()`, `resolveMapObjectOwners()`
+- **Note**: `resolveMapObjectOwners()` and `getAllMapObjects()` are overridable defaults — concrete world implementations provide the typed map object lists.
+- **Tests**: `BoloWorldMixinTest.java` — 14 tests
 
 ---
 
