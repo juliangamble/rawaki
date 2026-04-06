@@ -118,10 +118,12 @@ Extend the core map with game-specific logic and establish the base class for wo
 - **Note**: Collapses Villain's `WorldObject` → `NetWorldObject` → `BoloObject` into a single class. Also created `World` interface (`org.rawaki.core.world.World`).
 - **Tests**: `BoloObjectTest.java` — 22 tests
 
-### 2.4 NetWorldObject Equivalent
-- **Target**: `org.rawaki.core.objects.NetWorldObject` (abstract)
-- **Responsibilities**: object index (`idx`), reference tracking (`ref()`), event system (`on()`, `emit()`), serialization hook (`serialization()`)
-- **Note**: The Villain engine's `ref()` system tracks object references for network sync. In Java, use typed fields with explicit serialization.
+### 2.4 NetWorldObject Equivalent ✅
+- **Target**: `BoloObject.Ref<T>` (inner class of `org.rawaki.core.objects.BoloObject`)
+- **Responsibilities**: Tracked object references with auto-cleanup on `finalize` event — replaces Villain's `ref()` system
+- **Methods**: `get()`, `set()`, `clear()`, `isPresent()`
+- **Note**: Merged into BoloObject rather than a separate class. The `emit()` method uses `List.copyOf()` to avoid ConcurrentModificationException when listeners modify the list during iteration.
+- **Tests**: Added 7 Ref tests to `BoloObjectTest.java` (total now 29)
 
 ### 2.5 WorldMixin
 - **Source**: `src/world_mixin.coffee`

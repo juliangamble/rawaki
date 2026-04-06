@@ -46,7 +46,7 @@ public abstract class BoloObject {
     public void emit(String event) {
         List<Runnable> list = listeners.get(event);
         if (list != null) {
-            for (Runnable r : list) r.run();
+            for (Runnable r : List.copyOf(list)) r.run();
         }
     }
 
@@ -86,4 +86,44 @@ public abstract class BoloObject {
     public Integer y()                { return y; }
     public void setX(Integer x)       { this.x = x; }
     public void setY(Integer y)       { this.y = y; }
+
+    // ── Ref: tracked object reference with auto-cleanup ───────────────────
+
+    public static class Ref<T extends BoloObject> {
+        private T target;
+        private final BoloObject owner;
+        private Runnable cleanupListener;
+
+        Ref(BoloObject owner, T target) {
+            this.owner = owner;
+            set(target);
+        }
+
+        public T get() { return target; }
+
+        public void set(T newTarget) {
+            clear();
+            this.target = newTarget;
+            if (newTarget != null) {
+                cleanupListener = this::clear;
+                newTarget.on("finalize", cleanupListener);
+                owner.on("finalize", cleanupListener);
+            }
+        }
+
+        public void clear() {
+            if (target != null && cleanupListener != null) {
+                target.removeListener("finalize", cleanupListener);
+                owner.removeListener("finalize", cleanupListener);
+            }
+            target = null;
+            cleanupListener = null;
+        }
+
+        public boolean isPresent() { return target != null; }
+    }
+
+    public <T extends BoloObject> Ref<T> ref(T target) {
+        return new Ref<>(this, target);
+    }
 }

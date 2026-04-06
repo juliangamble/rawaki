@@ -220,4 +220,70 @@ class BoloObjectTest {
         obj.emit("test");
         assertEquals(0, count[0]);
     }
+
+    // ── Ref ─────────────────────────────────────────────────────────────────────
+
+    @Test
+    void refHoldsTarget() {
+        var owner = new TestObject(world);
+        var target = new TestObject(world);
+        var ref = owner.ref(target);
+        assertSame(target, ref.get());
+        assertTrue(ref.isPresent());
+    }
+
+    @Test
+    void refClearNullsTarget() {
+        var owner = new TestObject(world);
+        var target = new TestObject(world);
+        var ref = owner.ref(target);
+        ref.clear();
+        assertNull(ref.get());
+        assertFalse(ref.isPresent());
+    }
+
+    @Test
+    void refSetReplacesTarget() {
+        var owner = new TestObject(world);
+        var t1 = new TestObject(world);
+        var t2 = new TestObject(world);
+        var ref = owner.ref(t1);
+        ref.set(t2);
+        assertSame(t2, ref.get());
+    }
+
+    @Test
+    void refClearsWhenTargetFinalized() {
+        var owner = new TestObject(world);
+        var target = new TestObject(world);
+        var ref = owner.ref(target);
+        target.emit("finalize");
+        assertNull(ref.get());
+    }
+
+    @Test
+    void refClearsWhenOwnerFinalized() {
+        var owner = new TestObject(world);
+        var target = new TestObject(world);
+        var ref = owner.ref(target);
+        owner.emit("finalize");
+        assertNull(ref.get());
+    }
+
+    @Test
+    void refSetToNullClears() {
+        var owner = new TestObject(world);
+        var target = new TestObject(world);
+        var ref = owner.ref(target);
+        ref.set(null);
+        assertNull(ref.get());
+    }
+
+    @Test
+    void refWithNullTarget() {
+        var owner = new TestObject(world);
+        var ref = owner.ref((TestObject) null);
+        assertNull(ref.get());
+        assertFalse(ref.isPresent());
+    }
 }

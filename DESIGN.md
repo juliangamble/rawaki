@@ -146,3 +146,26 @@ executor.scheduleAtFixedRate(() -> {
 ```
 
 Single-threaded to match Orona's model — all game state mutation happens on the loop thread. WebSocket message handlers queue commands for processing on the next tick.
+
+## Object Reference Tracking (Ref)
+
+Orona uses a Villain engine pattern called `ref()` to track references between game objects. For example, a shell references its owner tank, a builder references the pillbox it's carrying, and a base references the tank it's refueling.
+
+The problem `ref()` solves: when an object is destroyed, any other objects holding references to it need to be notified so they can clean up. In CoffeeScript/Villain, this is done via event listeners on a `finalize` event, wrapped in a `{ $: target }` object.
+
+In Rawaki, this is implemented as `BoloObject.Ref<T>` — a typed wrapper that:
+- Holds a reference to another `BoloObject`
+- Automatically clears itself when the target or owner emits `finalize`
+- Cleans up old listeners when the reference is reassigned
+
+```java
+// CoffeeScript: @ref 'owner', tank
+// Java equivalent:
+private Ref<Tank> owner = ref(null);
+owner.set(tank);       // track reference
+owner.get();           // dereference (was .$ in CoffeeScript)
+owner.clear();         // release reference
+owner.set(null);       // also releases
+```
+
+This avoids memory leaks and stale references in the game object graph without requiring a garbage-collection-aware weak reference system.
