@@ -102,10 +102,12 @@ Extend the core map with game-specific logic and establish the base class for wo
 - **Note**: `setType()` override adds `life` tracking. Defines `PillLike`, `BaseLike`, `TankLike`, `ManLike` interfaces to avoid circular dependencies with game object package.
 - **Tests**: `WorldMapCellTest.java` — 38 tests
 
-### 2.2 WorldMap
+### 2.2 WorldMap ✅
 - **Source**: `src/world_map.coffee` — `WorldMap`
 - **Target**: `org.rawaki.core.map.WorldMap extends GameMap`
 - **Key methods**: `cellAtPixel()`, `cellAtWorld()`, `getRandomStart()`
+- **Note**: Overrides `createCell()` to produce `WorldMapCell` instances. Holds a `world` back-reference.
+- **Tests**: `WorldMapTest.java` — 10 tests
 
 ### 2.3 BoloObject (Base)
 - **Source**: `src/object.coffee`
