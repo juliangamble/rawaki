@@ -109,12 +109,14 @@ Extend the core map with game-specific logic and establish the base class for wo
 - **Note**: Overrides `createCell()` to produce `WorldMapCell` instances. Holds a `world` back-reference.
 - **Tests**: `WorldMapTest.java` — 10 tests
 
-### 2.3 BoloObject (Base)
-- **Source**: `src/object.coffee`
+### 2.3 BoloObject (Base) ✅
+- **Source**: `src/object.coffee` + `villain/world/object.coffee` + `villain/world/net/object.coffee`
 - **Target**: `org.rawaki.core.objects.BoloObject` (abstract class)
-- **Fields**: `styled`, `team`, `x`, `y`
-- **Methods**: `soundEffect()`, `getTile()`
-- **Note**: In CoffeeScript this extends `villain/world/net/object` (Villain engine). In Java, we implement our own lightweight equivalent — an object that lives in a World, has an index, and supports serialization callbacks.
+- **Fields**: `world`, `idx`, `updatePriority`, `styled`, `team`, `x`, `y`
+- **Methods**: `spawn()`, `update()`, `destroy()`, `anySpawn()`, `soundEffect()`, `getTile()`
+- **Events**: Simple `on()`/`emit()`/`removeListener()` system replacing Node's EventEmitter
+- **Note**: Collapses Villain's `WorldObject` → `NetWorldObject` → `BoloObject` into a single class. Also created `World` interface (`org.rawaki.core.world.World`).
+- **Tests**: `BoloObjectTest.java` — 22 tests
 
 ### 2.4 NetWorldObject Equivalent
 - **Target**: `org.rawaki.core.objects.NetWorldObject` (abstract)
