@@ -185,10 +185,12 @@ Port each game object. These all extend BoloObject and implement `serialization(
 - **Logic**: Simple animation timer (lifespan 23, 8 tile phases), self-destroys at 0
 - **Tests**: `ExplosionTest.java` — 8 tests
 
-### 3.7 Fireball
+### 3.7 Fireball ✅
 - **Source**: `src/objects/fireball.coffee`
 - **Target**: `org.rawaki.core.objects.Fireball`
-- **Logic**: Moving trail of fire from dying tank, terrain destruction, final explosion
+- **Logic**: Moving trail of fire from dying tank (lifespan 80, moves every 2 ticks), terrain destruction (boat→river, forest→grass), obstacle avoidance, final explosion (small or large based on ammo), sinks in deep sea
+- **Deferred**: Explosion spawning per cell, builder kill in explode
+- **Tests**: `FireballTest.java` — 11 tests
 
 ### 3.8 FloodFill
 - **Source**: `src/objects/flood_fill.coffee`
