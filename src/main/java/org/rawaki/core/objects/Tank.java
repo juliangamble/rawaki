@@ -166,11 +166,21 @@ public class Tank extends BoloObject implements WorldMapCell.TankLike, WorldBase
     }
 
     public void kill() {
-        // dropPillboxes() deferred to integration
+        dropPillboxes();
         x = null;
         y = null;
         armourVal = 255;
         respawnTimer = 255;
+    }
+
+    private void dropPillboxes() {
+        // Get pillboxes carried by this tank
+        var pills = new java.util.ArrayList<WorldPillbox>();
+        for (var pill : world().map().pills()) {
+            if (pill.cell() != null) continue; // only check map-level pills
+            // Full implementation needs WorldPillbox typed access from map pills
+            // Deferred to Phase 4 integration
+        }
     }
 
     public boolean death() {
@@ -256,6 +266,15 @@ public class Tank extends BoloObject implements WorldMapCell.TankLike, WorldBase
             if (x % Constants.TILE_SIZE_WORLD >= halftile) x++; else x--;
             if (y % Constants.TILE_SIZE_WORLD >= halftile) y++; else y--;
             speed = max(0.00, speed - 1);
+        }
+        // Check collision with other tanks
+        for (BoloObject obj : world().tanks()) {
+            if (obj instanceof Tank other && other != this && other.armour() != 255) {
+                if (Helpers.distance(x, y, other.x(), other.y()) <= 255) {
+                    if (other.x() < x) x++; else x--;
+                    if (other.y() < y) y++; else y--;
+                }
+            }
         }
     }
 

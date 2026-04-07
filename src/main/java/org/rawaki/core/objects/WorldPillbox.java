@@ -93,8 +93,13 @@ public class WorldPillbox extends BoloObject implements WorldMapCell.PillLike {
 
         if (armour == 0) {
             haveTarget = false;
-            // Look for a tank to pick us up
-            // (Requires typed tank list — deferred to integration with Tank class)
+            for (BoloObject obj : world().tanks()) {
+                if (obj instanceof Tank tank && tank.armour() != 255 && tank.cell() == cell) {
+                    inTank = true; x = null; y = null; updateCell();
+                    owner.set(obj); updateOwner();
+                    break;
+                }
+            }
             return;
         }
 
@@ -105,8 +110,31 @@ public class WorldPillbox extends BoloObject implements WorldMapCell.PillLike {
         }
         if (reload < speed) return;
 
-        // Targeting logic deferred to integration with Tank/Shell classes
-        // For now, just reset reload when ready
+        // Find nearest enemy tank within range
+        Tank target = null;
+        double targetDistance = Double.MAX_VALUE;
+        for (BoloObject obj : world().tanks()) {
+            if (obj instanceof Tank tank && tank.armour() != 255) {
+                if (owner.isPresent() && owner.get() instanceof Tank ownerTank && ownerTank.isAlly(tank)) continue;
+                double d = Helpers.distance(x, y, tank.x(), tank.y());
+                if (d <= 2048 && d < targetDistance) {
+                    target = tank; targetDistance = d;
+                }
+            }
+        }
+        if (target == null) { haveTarget = false; return; }
+
+        if (haveTarget) {
+            // Fire with lead calculation
+            double rad = (256 - target.getDirection16th() * 16) * 2 * Math.PI / 256;
+            double tx = target.x() + targetDistance / 32 * Math.round(Math.cos(rad) * Math.ceil(target.speed()));
+            double ty = target.y() + targetDistance / 32 * Math.round(Math.sin(rad) * Math.ceil(target.speed()));
+            double direction = 256 - Helpers.heading(x, y, tx, ty) * 256 / (2 * Math.PI);
+            // Shell spawning requires world.spawn — deferred to Phase 4
+            soundEffect(SoundEffect.SHOOTING);
+        }
+        haveTarget = true;
+        reload = 0;
     }
 
     // ── Combat ────────────────────────────────────────────────────────────

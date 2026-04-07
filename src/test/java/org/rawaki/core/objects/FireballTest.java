@@ -27,6 +27,7 @@ class FireballTest {
             public void destroy(BoloObject obj) { destroyed = true; }
             public void insert(BoloObject obj) {}
             public boolean authority() { return true; }
+            public java.util.List<BoloObject> tanks() { return java.util.List.of(); }
         };
     }
 

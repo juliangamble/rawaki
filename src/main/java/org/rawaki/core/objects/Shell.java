@@ -98,7 +98,13 @@ public class Shell extends BoloObject {
         }
 
         // Check tank collision (not our owner)
-        // Deferred — requires typed tank list
+        for (BoloObject obj : world().tanks()) {
+            if (obj instanceof Tank tank && tank != (owner.isPresent() ? owner.get() : null) && tank.armour() != 255) {
+                if (Helpers.distance(x, y, tank.x(), tank.y()) <= 127) {
+                    return new String[]{"tank", "tank"};
+                }
+            }
+        }
 
         // Check terrain collision
         boolean terrainCollision;

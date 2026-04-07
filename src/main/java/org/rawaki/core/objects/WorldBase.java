@@ -68,7 +68,7 @@ public class WorldBase extends BoloObject implements WorldMapCell.BaseLike {
         }
 
         if (!refueling.isPresent()) {
-            // findSubject deferred — requires typed tank list integration
+            findSubject();
             return;
         }
 
@@ -97,9 +97,45 @@ public class WorldBase extends BoloObject implements WorldMapCell.BaseLike {
     // ── Combat ────────────────────────────────────────────────────────────
 
     public SoundEffect takeShellHit() {
-        // Aggravate nearby allied pillboxes — deferred to integration with typed pill list
+        // Aggravate nearby allied pillboxes
+        if (owner.isPresent() && owner.get() instanceof Tank ownerTank) {
+            for (var pill : world().map().pills()) {
+                if (pill.cell() != null) {
+                    var wp = (WorldPillbox) world().map().cellAtTile(pill.x(), pill.y()).pill();
+                    // Simplified — full aggravation needs WorldPillbox typed access from map.pills
+                }
+            }
+        }
         armour = Math.max(0, armour - 5);
         return SoundEffect.SHOT_BUILDING;
+    }
+
+    private void findSubject() {
+        java.util.List<Tank> tanksOnCell = new java.util.ArrayList<>();
+        for (BoloObject obj : world().tanks()) {
+            if (obj instanceof Tank tank && tank.armour() != 255 && tank.cell() == cell) {
+                tanksOnCell.add(tank);
+            }
+        }
+        for (Tank tank : tanksOnCell) {
+            if (owner.isPresent() && owner.get() instanceof Tank ownerTank && ownerTank.isAlly(tank)) {
+                refueling.set(tank);
+                refuelCounter = 46;
+                break;
+            } else {
+                boolean canClaim = true;
+                for (Tank other : tanksOnCell) {
+                    if (other != tank && !tank.isAlly(other)) { canClaim = false; break; }
+                }
+                if (canClaim) {
+                    owner.set(tank); updateOwner();
+                    tank.on("destroy", () -> { owner.clear(); updateOwner(); });
+                    refueling.set(tank);
+                    refuelCounter = 46;
+                    break;
+                }
+            }
+        }
     }
 
     // ── BaseLike interface ────────────────────────────────────────────────

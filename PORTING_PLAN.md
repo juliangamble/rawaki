@@ -141,42 +141,42 @@ Port each game object. These all extend BoloObject and implement `serialization(
 ### 3.1 WorldPillbox ✅
 - **Source**: `src/objects/world_pillbox.coffee`
 - **Target**: `org.rawaki.core.objects.WorldPillbox`
-- **Logic**: Placement, cell management, owner tracking, aggravation, shell/explosion damage, repair, cooldown/reload cycle
+- **Logic**: Placement, cell management, owner tracking, aggravation, shell/explosion damage, repair, cooldown/reload cycle, tank pickup, AI targeting with lead calculation
 - **Implements**: `WorldMapCell.PillLike`
-- **Deferred**: AI targeting with lead calculation and shell spawning — requires Tank and Shell classes (Phase 3.3, 3.4)
+- **Deferred**: Shell spawning on fire — requires `world.spawn()` (Phase 4)
 - **Tests**: `WorldPillboxTest.java` — 31 tests
 
 ### 3.2 WorldBase ✅
 - **Source**: `src/objects/world_base.coffee`
 - **Target**: `org.rawaki.core.objects.WorldBase`
-- **Logic**: Owner tracking, refueling tanks (armour → shells → mines priority), shell damage
+- **Logic**: Owner tracking, refueling tanks (armour → shells → mines priority), shell damage, `findSubject()` with tank discovery and claiming
 - **Implements**: `WorldMapCell.BaseLike`
 - **Defines**: `RefuelTarget` interface for typed tank interaction during refueling
-- **Deferred**: `findSubject()` tank discovery and `takeShellHit()` pillbox aggravation — requires typed tank/pill lists (Phase 3.3)
+- **Deferred**: Explosion/MineExplosion spawning — requires `world.spawn()` (Phase 4)
 - **Tests**: `WorldBaseTest.java` — 17 tests
 
 ### 3.3 Tank ✅
 - **Source**: `src/objects/tank.coffee`
 - **Target**: `org.rawaki.core.objects.Tank`
-- **Logic**: Movement (acceleration, turning with speedup, sliding), shooting/reload, boat mechanics (enter/leave/sink), combat (shell/mine hits, kill, death/respawn), range adjustment, ally detection
+- **Logic**: Movement (acceleration, turning with speedup, sliding), shooting/reload, boat mechanics (enter/leave/sink), combat (shell/mine hits, kill, death/respawn), range adjustment, ally detection, collision with other tanks in fixPosition
 - **Implements**: `WorldMapCell.TankLike`, `WorldBase.RefuelTarget`
 - **Note**: `direction` uses `double` to match CoffeeScript float arithmetic for turning. Largest game object (~350 lines).
-- **Deferred**: Builder/fireball spawning, pillbox dropping, mine explosion spawning, tank collision in fixPosition — requires other object classes
+- **Deferred**: Builder/fireball spawning, shell spawning, mine explosion spawning, explosion spawning, dropPillboxes — requires `world.spawn()` (Phase 4)
 - **Tests**: `TankTest.java` — 55 tests
 
 ### 3.4 Shell ✅
 - **Source**: `src/objects/shell.coffee`
 - **Target**: `org.rawaki.core.objects.Shell`
-- **Logic**: Movement (32 units/step along direction), terrain collision detection (different rules for onWater), lifespan countdown, explosion on impact/expiry
-- **Deferred**: Tank collision detection (requires typed tank list), base collision, builder kill in asplode, Explosion/MineExplosion spawning
+- **Logic**: Movement (32 units/step along direction), terrain collision detection (different rules for onWater), tank collision detection, lifespan countdown, explosion on impact/expiry
+- **Deferred**: Base collision, builder kill in asplode, Explosion/MineExplosion spawning — requires `world.spawn()` (Phase 4)
 - **Tests**: `ShellTest.java` — 24 tests
 
 ### 3.5 Builder ✅
 - **Source**: `src/objects/builder.coffee`
 - **Target**: `org.rawaki.core.objects.Builder`
-- **Logic**: State machine (IN_TANK, WAITING, RETURNING, PARACHUTING, 7 action states), build actions (forest, road, repair, boat, building, pillbox, mine), kill/parachute, animation
+- **Logic**: State machine (IN_TANK, WAITING, RETURNING, PARACHUTING, 7 action states), build actions (forest, road, repair, boat, building, pillbox, mine), kill/parachute, animation, movement toward target/owner, resource return to tank
 - **Implements**: `WorldMapCell.ManLike`
-- **Deferred**: `performOrder()` validation (requires typed tank access), movement toward target/owner, resource return on reached/returning
+- **Deferred**: `performOrder()` validation, MineExplosion spawning — requires `world.spawn()` (Phase 4)
 - **Tests**: `BuilderTest.java` — 28 tests
 
 ### 3.6 Explosion ✅

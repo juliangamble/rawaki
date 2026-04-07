@@ -87,10 +87,12 @@ public class Builder extends BoloObject implements WorldMapCell.ManLike {
                 parachutingIn();
             }
             case RETURNING -> {
-                // Movement toward owner deferred — requires typed owner access
+                if (owner.isPresent() && owner.get() instanceof Tank ownerTank && ownerTank.armour() != 255) {
+                    moveToward(ownerTank.x(), ownerTank.y(), 128);
+                }
             }
             default -> {
-                // Movement toward target deferred — requires movement logic
+                moveToward(targetX, targetY, 16);
             }
         }
     }
@@ -101,7 +103,11 @@ public class Builder extends BoloObject implements WorldMapCell.ManLike {
         if (order == RETURNING) {
             order = IN_TANK;
             x = null; y = null;
-            // Return pillbox, trees, mine to owner — deferred to integration
+            // Return pillbox, trees, mine to owner
+            if (owner.isPresent() && owner.get() instanceof Tank ownerTank) {
+                ownerTank.setTrees(Math.min(40, ownerTank.trees() + trees));
+                if (hasMine) ownerTank.setMines(Math.min(40, ownerTank.mines() + 1));
+            }
             trees = 0;
             hasMine = false;
             return;
@@ -175,6 +181,24 @@ public class Builder extends BoloObject implements WorldMapCell.ManLike {
 
         order = WAITING;
         waitTimer = 20;
+    }
+
+    // ── Movement ──────────────────────────────────────────────────────────
+
+    private void moveToward(int tx, int ty, int targetRadius) {
+        if (x == null || y == null || cell == null) return;
+        double dist = Helpers.distance(x, y, tx, ty);
+        if (dist <= targetRadius) {
+            reached();
+            return;
+        }
+        double rad = Helpers.heading(x, y, tx, ty);
+        int speed = cell.getManSpeed(this);
+        if (speed == 0) { order = RETURNING; return; }
+        speed = (int) Math.min(speed, dist);
+        x = x + (int) Math.round(Math.cos(rad) * Math.ceil(speed));
+        y = y + (int) Math.round(Math.sin(rad) * Math.ceil(speed));
+        updateCell();
     }
 
     // ── Kill ──────────────────────────────────────────────────────────────

@@ -11,4 +11,5 @@ public interface World {
     void destroy(BoloObject obj);
     void insert(BoloObject obj);
     boolean authority();
+    java.util.List<BoloObject> tanks();
 }
