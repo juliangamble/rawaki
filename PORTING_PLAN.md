@@ -138,10 +138,13 @@ Extend the core map with game-specific logic and establish the base class for wo
 
 Port each game object. These all extend BoloObject and implement `serialization()`, `spawn()`, `update()`, `destroy()`.
 
-### 3.1 WorldPillbox
+### 3.1 WorldPillbox ✅
 - **Source**: `src/objects/world_pillbox.coffee`
 - **Target**: `org.rawaki.core.objects.WorldPillbox`
-- **Logic**: AI targeting (finds nearest enemy tank within range), shooting, aggravation, repair, pickup by tank
+- **Logic**: Placement, cell management, owner tracking, aggravation, shell/explosion damage, repair, cooldown/reload cycle
+- **Implements**: `WorldMapCell.PillLike`
+- **Deferred**: AI targeting with lead calculation and shell spawning — requires Tank and Shell classes (Phase 3.3, 3.4)
+- **Tests**: `WorldPillboxTest.java` — 31 tests
 
 ### 3.2 WorldBase
 - **Source**: `src/objects/world_base.coffee`
