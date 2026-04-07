@@ -164,10 +164,12 @@ Port each game object. These all extend BoloObject and implement `serialization(
 - **Deferred**: Builder/fireball spawning, pillbox dropping, mine explosion spawning, tank collision in fixPosition — requires other object classes
 - **Tests**: `TankTest.java` — 55 tests
 
-### 3.4 Shell
+### 3.4 Shell ✅
 - **Source**: `src/objects/shell.coffee`
 - **Target**: `org.rawaki.core.objects.Shell`
-- **Logic**: Movement, collision detection (pillbox, tank, base, terrain), explosion on impact
+- **Logic**: Movement (32 units/step along direction), terrain collision detection (different rules for onWater), lifespan countdown, explosion on impact/expiry
+- **Deferred**: Tank collision detection (requires typed tank list), base collision, builder kill in asplode, Explosion/MineExplosion spawning
+- **Tests**: `ShellTest.java` — 24 tests
 
 ### 3.5 Builder
 - **Source**: `src/objects/builder.coffee`
