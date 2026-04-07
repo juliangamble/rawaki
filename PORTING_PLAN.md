@@ -146,10 +146,14 @@ Port each game object. These all extend BoloObject and implement `serialization(
 - **Deferred**: AI targeting with lead calculation and shell spawning — requires Tank and Shell classes (Phase 3.3, 3.4)
 - **Tests**: `WorldPillboxTest.java` — 31 tests
 
-### 3.2 WorldBase
+### 3.2 WorldBase ✅
 - **Source**: `src/objects/world_base.coffee`
 - **Target**: `org.rawaki.core.objects.WorldBase`
-- **Logic**: Refueling tanks (armour → shells → mines), ownership/claiming
+- **Logic**: Owner tracking, refueling tanks (armour → shells → mines priority), shell damage
+- **Implements**: `WorldMapCell.BaseLike`
+- **Defines**: `RefuelTarget` interface for typed tank interaction during refueling
+- **Deferred**: `findSubject()` tank discovery and `takeShellHit()` pillbox aggravation — requires typed tank/pill lists (Phase 3.3)
+- **Tests**: `WorldBaseTest.java` — 17 tests
 
 ### 3.3 Tank
 - **Source**: `src/objects/tank.coffee`
