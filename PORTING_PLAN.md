@@ -192,10 +192,12 @@ Port each game object. These all extend BoloObject and implement `serialization(
 - **Deferred**: Explosion spawning per cell, builder kill in explode
 - **Tests**: `FireballTest.java` — 11 tests
 
-### 3.8 FloodFill
+### 3.8 FloodFill ✅
 - **Source**: `src/objects/flood_fill.coffee`
 - **Target**: `org.rawaki.core.objects.FloodFill`
-- **Logic**: Delayed flooding of craters adjacent to water
+- **Logic**: Delayed flooding of craters adjacent to water (lifespan 16), checks 4 cardinal neighbours for water/deep sea/boat, converts cell to river if wet, spreads to adjacent craters
+- **Deferred**: `spread()` spawning new FloodFill objects on crater neighbours
+- **Tests**: `FloodFillTest.java` — 11 tests
 
 ### 3.9 MineExplosion
 - **Source**: `src/objects/mine_explosion.coffee`
