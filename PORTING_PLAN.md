@@ -171,10 +171,13 @@ Port each game object. These all extend BoloObject and implement `serialization(
 - **Deferred**: Tank collision detection (requires typed tank list), base collision, builder kill in asplode, Explosion/MineExplosion spawning
 - **Tests**: `ShellTest.java` — 24 tests
 
-### 3.5 Builder
+### 3.5 Builder ✅
 - **Source**: `src/objects/builder.coffee`
 - **Target**: `org.rawaki.core.objects.Builder`
-- **Logic**: State machine (inTank, waiting, returning, parachuting, actions), building actions (forest, road, repair, boat, building, pillbox, mine), pathfinding to target
+- **Logic**: State machine (IN_TANK, WAITING, RETURNING, PARACHUTING, 7 action states), build actions (forest, road, repair, boat, building, pillbox, mine), kill/parachute, animation
+- **Implements**: `WorldMapCell.ManLike`
+- **Deferred**: `performOrder()` validation (requires typed tank access), movement toward target/owner, resource return on reached/returning
+- **Tests**: `BuilderTest.java` — 28 tests
 
 ### 3.6 Explosion
 - **Source**: `src/objects/explosion.coffee`

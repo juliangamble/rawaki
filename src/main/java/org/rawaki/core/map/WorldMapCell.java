@@ -139,6 +139,7 @@ public class WorldMapCell extends MapCell {
     public interface PillLike {
         int armour();
         void takeExplosionHit();
+        default int repair(int trees) { return 0; }
     }
 
     public interface BaseLike {
