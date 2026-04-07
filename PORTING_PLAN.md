@@ -206,12 +206,13 @@ Port each game object. These all extend BoloObject and implement `serialization(
 - **Deferred**: Tank/builder damage in asplode, Explosion spawning, spread spawning new MineExplosion objects
 - **Tests**: `MineExplosionTest.java` — 9 tests
 
-### 3.10 Object Registry
+### 3.10 Object Registry ✅
 - **Source**: `src/objects/all.coffee`
 - **Target**: `org.rawaki.core.objects.ObjectRegistry`
-- **Content**: Register all object types with the world (for network serialization type indices)
+- **Content**: Immutable list of 9 object types in network serialization order, with `indexOf()` and `typeAt()` lookups
+- **Tests**: `ObjectRegistryTest.java` — 6 tests
 
-### 3.11 Tests for Phase 3
+### 3.11 Tests for Phase 3 ✅
 - Port the existing Mocha tests to JUnit 5 (393 total tests available as reference):
   - `test/tank.test.js` — 54 tests: reset, direction, range, allies, combat, turning, acceleration, shooting
   - `test/builder.test.js` — 45 tests: states, performOrder, kill, reached, build actions, update
@@ -221,6 +222,8 @@ Port each game object. These all extend BoloObject and implement `serialization(
   - `test/world_mixin.test.js` — 19 tests: addTank, removeTank, spawnMapObjects, resolveMapObjectOwners
 - Integration test: spawn tank, fire shell, verify terrain damage
 - Integration test: builder builds road, building, places pillbox
+- **Result**: 450 JUnit tests across 18 test classes, all passing
+- **TODO**: Revisit at end of port to ensure full parity with Orona Mocha tests, especially deferred integration tests
 
 ---
 
