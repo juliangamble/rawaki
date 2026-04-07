@@ -155,11 +155,14 @@ Port each game object. These all extend BoloObject and implement `serialization(
 - **Deferred**: `findSubject()` tank discovery and `takeShellHit()` pillbox aggravation — requires typed tank/pill lists (Phase 3.3)
 - **Tests**: `WorldBaseTest.java` — 17 tests
 
-### 3.3 Tank
+### 3.3 Tank ✅
 - **Source**: `src/objects/tank.coffee`
 - **Target**: `org.rawaki.core.objects.Tank`
-- **Logic**: Movement (acceleration, turning, sliding), shooting, boat mechanics, collision detection, death/respawn, pillbox dropping
-- **Note**: Largest object — ~300 lines of game logic. Port method by method.
+- **Logic**: Movement (acceleration, turning with speedup, sliding), shooting/reload, boat mechanics (enter/leave/sink), combat (shell/mine hits, kill, death/respawn), range adjustment, ally detection
+- **Implements**: `WorldMapCell.TankLike`, `WorldBase.RefuelTarget`
+- **Note**: `direction` uses `double` to match CoffeeScript float arithmetic for turning. Largest game object (~350 lines).
+- **Deferred**: Builder/fireball spawning, pillbox dropping, mine explosion spawning, tank collision in fixPosition — requires other object classes
+- **Tests**: `TankTest.java` — 55 tests
 
 ### 3.4 Shell
 - **Source**: `src/objects/shell.coffee`
@@ -431,3 +434,9 @@ src/test/java/org/rawaki/
 7. **Phase 7** — Visual tests, polish, full parity verification
 
 Each phase is independently testable. Phase 1 alone gives you a working BMAP parser and map model.
+
+---
+
+## TODO
+
+- [ ] Choose licence for Rawaki. Orona is GNU GPL v2 (inherited from WinBolo). Since Rawaki ports game logic from Orona, it is likely a derived work and must also be GPL v2. Confirm and add COPYING file.
