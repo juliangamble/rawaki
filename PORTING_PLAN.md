@@ -199,10 +199,12 @@ Port each game object. These all extend BoloObject and implement `serialization(
 - **Deferred**: `spread()` spawning new FloodFill objects on crater neighbours
 - **Tests**: `FloodFillTest.java` — 11 tests
 
-### 3.9 MineExplosion
+### 3.9 MineExplosion ✅
 - **Source**: `src/objects/mine_explosion.coffee`
 - **Target**: `org.rawaki.core.objects.MineExplosion`
-- **Logic**: Delayed mine detonation, chain reaction spreading to neighbours
+- **Logic**: Delayed mine detonation (lifespan 10), clears mine flag, applies explosion damage to terrain, chain reaction spreading to 4 cardinal neighbours
+- **Deferred**: Tank/builder damage in asplode, Explosion spawning, spread spawning new MineExplosion objects
+- **Tests**: `MineExplosionTest.java` — 9 tests
 
 ### 3.10 Object Registry
 - **Source**: `src/objects/all.coffee`
