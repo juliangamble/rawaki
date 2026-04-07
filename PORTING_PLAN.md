@@ -179,10 +179,11 @@ Port each game object. These all extend BoloObject and implement `serialization(
 - **Deferred**: `performOrder()` validation (requires typed tank access), movement toward target/owner, resource return on reached/returning
 - **Tests**: `BuilderTest.java` — 28 tests
 
-### 3.6 Explosion
+### 3.6 Explosion ✅
 - **Source**: `src/objects/explosion.coffee`
 - **Target**: `org.rawaki.core.objects.Explosion`
-- **Logic**: Simple animation timer with tile selection
+- **Logic**: Simple animation timer (lifespan 23, 8 tile phases), self-destroys at 0
+- **Tests**: `ExplosionTest.java` — 8 tests
 
 ### 3.7 Fireball
 - **Source**: `src/objects/fireball.coffee`
